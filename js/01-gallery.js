@@ -5,7 +5,7 @@ const refs = {
   galleryEl: document.querySelector(".gallery"),
 };
 
-const createGalleryItemsMarkup = function (items) {
+const createGalleryItemsMarkup = (items) => {
   return items
     .map(({ preview, original, description } = {}) => {
       return `
@@ -24,18 +24,34 @@ const createGalleryItemsMarkup = function (items) {
     .join("");
 };
 
+let modalImage = "";
 const galleryItemsMarkup = createGalleryItemsMarkup(galleryItems);
 
-const openModal = function (url) {
+const createModal = (url) => {
   const instance = basicLightbox.create(`
     <img src="${url}" width="800" height="600">
 `);
-  instance.show();
+  modalImage = instance;
 };
-const handleOpenModal = function (e) {
+const handleOpenModal = (e) => {
   e.preventDefault();
-  openModal(e.target.dataset.source);
+  if (e.target.nodeName !== "IMG") {
+    return;
+  }
+  createModal(e.target.dataset.source);
+  modalImage.show();
+  window.addEventListener("keydown", handleEscKeyPress);
+};
+const closeModal = () => {
+  modalImage.close();
+  window.removeEventListener("keydown", handleEscKeyPress);
 };
 
 refs.galleryEl.innerHTML = galleryItemsMarkup;
 refs.galleryEl.addEventListener("click", handleOpenModal);
+
+function handleEscKeyPress(e) {
+  if (e.code === "Escape") {
+    closeModal();
+  }
+}

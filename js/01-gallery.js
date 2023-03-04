@@ -3,9 +3,6 @@ import { galleryItems } from "./gallery-items.js";
 
 const refs = {
   galleryEl: document.querySelector(".gallery"),
-  galleryItemEl: document.querySelector(".gallery__item"),
-  galleryLinkEl: document.querySelector(".gallery__link"),
-  galleryImageEl: document.querySelector(".gallery__image"),
 };
 
 const createGalleryItemsMarkup = function (items) {
